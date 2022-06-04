@@ -1,23 +1,28 @@
 import json
 import time
-import asyncio
+# import asyncio
 from websocket import create_connection
 
+from utils import default_logger
+
+logger = default_logger()
+
 ws_client = create_connection("ws://localhost:8766/rebroadcast")
-# for i in range(100):
 tic = time.time()
-while True:
-    
-    ws_client.send( json.dumps( { "data": 'Naiiii Poios Einaiii'} ) )
-    data = ws_client.recv()
 
-    toc = time.time()
-    delta = toc - tic
-    tic = toc
-    print(delta*1E3)     # ms
-    # print(data)
-    # await asyncio.sleep(1)
-    # time.sleep(1)
-    # asyncio.sleep(1)
+try:
+    while True:
+        
+        ws_client.send( json.dumps( { "data": 'Naiiii Poios Einaiii'} ) )
+        data = ws_client.recv()
 
-ws_client.close()
+        toc = time.time()
+        delta = toc - tic
+        tic = toc
+        logger.debug(delta*1E3)     # ms
+        # print(data)
+        # await asyncio.sleep(1)
+        # time.sleep(1)
+        # asyncio.sleep(1)
+except KeyboardInterrupt:
+    ws_client.close()
